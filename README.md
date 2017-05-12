@@ -1,4 +1,4 @@
-"# MyBolg" 
+# MyBolg 
 * Python 3.6.1
 * Microsoft Windows [版本 10.0.14393]
 * Eclipse Neon Release (4.6.0)   
