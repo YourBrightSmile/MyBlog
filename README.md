@@ -7,6 +7,8 @@
 * 项目结构
 
 
+
+
     MyBlog              根目录
         backup          备份目录
         conf            配置文件
@@ -15,6 +17,7 @@
             static      存放静态文件
             templates   存放模板文件
         LICENSE         代码LICENSE
+        
         
 * 建立git仓库同步到github
 
