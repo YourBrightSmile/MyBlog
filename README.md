@@ -1,7 +1,8 @@
 # MyBolg 
 * Python 3.6.1
 * Microsoft Windows [版本 10.0.14393]
-* Eclipse Neon Release (4.6.0)   
+* Eclipse Neon Release (4.6.0) 
+* MySQL  Ver 14.14 Distrib 5.6.36, for Win64 (x86_64)  
 * python库
 > aiohttp,jinja2,aiomysql 使用pip安装
 * 项目结构
