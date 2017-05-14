@@ -62,13 +62,14 @@ async def execute(sql,args,autocommit=True):
                 async with conn.cursor(aiomysql.DictCursor) as cur:
                     await cur.execute(sql.replace('?','%s'),args)
                     affectedRow=cur.rowcount
+                    logging.debug('execute affectedRow'%affectedRow)
                 if not autocommit:
                     await conn.commit()
                     
             except BaseException as e:
                 if not autocommit:
                     await conn.rollback()
-                raise
+                raise 
             return affectedRow
 
 #利用封装好的select和execute创建ORM 
@@ -231,9 +232,11 @@ class Model(dict,metaclass=ModelMetaclass):
     
     async def save(self):
         #获取所有value
+        logging.debug('model save ')
         args=list(map(self.getValueOrDefault,self.__fields__))
         args.append(self.getValueOrDefault(self.__primary_key__))
         rows = await execute(self.__insert__, args)
+        logging.debug('model save row : %s '%rows)
         if rows != 1:
             logging.warn("failed to insert recoder :affected rows :%s "% rows)
     async def update(self):
@@ -247,12 +250,7 @@ class Model(dict,metaclass=ModelMetaclass):
         args = [self.getValue(self.__primary_key__)]
         rows = await execute(self.__delete__, args)
         if rows != 1:
-            logging.warning('failed to remove by primary key: affected rows: %s' % rows)
-#会隐式的继承metaclass
-#class User(Model):
-#    __table__='users' 
-#    id = IntegerField(primary_key=True)
-#    name = StringField()
+            logging.warning('failed to remove by primary key: affected rows: %s' % rows)            
 
             
             
