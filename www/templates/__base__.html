@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	{% block meta %}<!-- block meta  -->{% endblock%}
+	<title>{% block title %}?{% endblock %}</title>
+	<link rel="stylesheet" href="/static/css/uikit.min.css">
+	<link rel="stylesheet" href="/static/css/uikit.almost-flat.min">
+	<script src="/static/js/jquery.min.js"></script>
+	<script src="/static/uikit.min.js"></script>
+	<style>
+		html,body,.main{ height: 100%; }
+		.main{ 
+			height:auto;
+			min-height: 100%;
+		 	
+		 }
+		 .banner{
+		 	padding-top: 12px;
+    		padding-bottom: 12px;
+    		color: rgba(255,255,255,0.75);
+    		height: 40px;
+    		background-color: #24292e;
+		 }
+		
+		.body-footer{
+			position: relative;
+			height: 149px;
+			margin-top: -149px;
+			background-color: #252525;
+			color:#7d7d7d;
+		}
+
+
+	</style>
+	{% block beforehead %}<!-- before head  -->{% endblock %}
+</head>
+<body >
+<div class="main">
+
+	<div  style="background: #24292E" class='banner body-nav uk-navbar uk-navbav-attached uk-contrast'>
+		<div  class="uk-container uk-width-3-4 uk-container-center">
+			<ul class='uk-navbar-nav'>
+			  	<a href="" class="uk-navbar-brand"><img src="https://www.baidu.com/favicon.ico"></a>
+			  	<li ><a>Aaaaa</a></li>
+			 	<li ><a>Bbbbb</a></li>
+			  	<li ><a>Ccccc</a></li> 
+			</ul>
+			<div class="uk-navbar-flip">
+				<ul class="uk-navbar-nav">
+                {% if user %}
+                    <li class="uk-parent"  data-uk-dropdown>
+                        <a href="#0"><i class="uk-icon-user"></i> {{ user.name }}</a>
+                        <div class="uk-dropdown uk-dropdown-navbar">
+                            <ul class="uk-nav uk-nav-navbar">
+                                <li><a href="/signout"><i class="uk-icon-sign-out"></i> 登出</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                {% else %}
+                    <li><a href="/signin"><i class="uk-icon-sign-in"></i> login</a></li>
+                    <li><a href="/register"><i class="uk-icon-edit"></i> register</a></li>
+                {% endif %}
+			</div>			
+		</div>		
+	</div>
+	<div class="body-middle" >
+		<div class="uk-container uk-container-center">
+        	<div class="uk-grid">
+	            <!-- content -->
+	            {% block content %}
+	            {% endblock %}
+	            <!-- // content -->
+       	 	</div>
+    	</div>
+		
+	</div>
+	<div style="height: 149px;"></div>
+</div>
+	<div class="body-footer " >
+        <div class="uk-container uk-container-center  uk-text-center">
+             <div class="uk-panel  uk-contrast uk-margin-top ">
+	             <ul class="uk-subnav uk-subnav-line uk-flex-center">
+                    <li><a href="https://github.com/YourBrightSmile/MyBlog">GitHub</a></li>
+                    <li><a href="http://weibo.com/u/2978312941" >weibo</a></li>
+                    
+                </ul>
+	        </div>
+            <div class="uk-panel uk-contrast " >
+                <p>Made by YourBrightSmile ,Licensed under <a href="https://github.com/YourBrightSmile/MyBlog/blob/master/LICENCE" >GNU license</a></p>
+                <hr>
+                <a href="../index.html" style="color:#7d7d7d"><img src="" width="90" height="30" title="GG" alt="GG"></a>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" src="//cdn.bootcss.com/canvas-nest.js/1.0.1/canvas-nest.min.js"></script>
+</body>
+</html>

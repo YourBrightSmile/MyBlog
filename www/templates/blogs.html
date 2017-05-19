@@ -1,0 +1,43 @@
+{% extends '__base__.html' %}
+{% block title %}blogs{% endblock %}
+{% block content %}
+	<div class="uk-width-1-4 uk-hidden-small">
+		{% if user %}
+		    <a href="/account" ><img  class="uk-margin-top uk-border-rounded" src="https://avatars0.githubusercontent.com/u/19619286?v=3" ></a>
+			<div class="" style="position: static;">
+				<h1 class="uk-text-center" style="word-break:break-all">
+			 		{{ user.name }}
+			  	</h1>
+			  <hr class="uk-article-divider">
+			</div>
+		{% endif %}
+
+  </div>
+    <div class="uk-width-medium-3-4">
+    	<h1 class="uk-text-center">Blog</h1>
+    	<hr class="uk-article-divider">
+        {% for blog in blogs %}
+        	<div >
+	            <article class="uk-article ">
+	                <h2><a href="/blog/{{ blog.id }}">{{ blog.name }}</a></h2>
+	                <p class="uk-article-meta">发表于{{ blog.created_at|datetime }}</p>
+	                <p>{{ blog.summary }}</p>
+	                <!-- 	                
+						<p class="uk-clearfix">
+	                	<img class="uk-align-medium-right uk-hidden-small" style="width: 60px;height: 60px;" src="https://avatars0.githubusercontent.com/u/19619286?v=3"/>	              	
+	                		                	
+	                </p> 
+	                -->             		                                       	
+	                <p>
+	                	<a href="/blog/{{ blog.id }}">继续阅读<i class="uk-icon-angle-double-right"></i>
+	                	</a>
+	                </p>
+	            </article>
+
+            </div>
+            <hr class="uk-article-divider">
+        {% endfor %}
+    </div>
+
+
+{% endblock %}
