@@ -159,6 +159,7 @@ class RequestHandler(object):
         logging.info('call with args:%s'%str(kw))
         try:
             r = await self._func(**kw)
+            logging.debug('RequestHandler try:%s'%r)
             return r
         except:
         #except APIError as e:
