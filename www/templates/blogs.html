@@ -1,6 +1,12 @@
 {% extends '__base__.html' %}
 {% block title %}blogs{% endblock %}
+{% block beforehead %}
+	<script type="text/javascript">
+
+	</script>
+{% endblock %}
 {% block content %}
+
 	<div class="uk-width-1-4 uk-hidden-small">
 		{% if user %}
 		    <a href="/account" ><img  class="uk-margin-top uk-border-rounded" src="https://avatars0.githubusercontent.com/u/19619286?v=3" ></a>
@@ -9,6 +15,9 @@
 			 		{{ user.name }}
 			  	</h1>
 			  <hr class="uk-article-divider">
+			  	<h3>  
+			  	    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;一个人的命运啊,当然要靠自我奋斗,但是也要考虑到历史的进程。
+			  	</h3>
 			</div>
 		{% endif %}
 
@@ -18,7 +27,7 @@
     	<hr class="uk-article-divider">
         {% for blog in blogs %}
         	<div >
-	            <article class="uk-article ">
+	            <article class="uk-article">
 	                <h2><a href="/blog/{{ blog.id }}">{{ blog.name }}</a></h2>
 	                <p class="uk-article-meta">发表于{{ blog.created_at|datetime }}</p>
 	                <p>{{ blog.summary }}</p>
@@ -38,6 +47,5 @@
             <hr class="uk-article-divider">
         {% endfor %}
     </div>
-
 
 {% endblock %}

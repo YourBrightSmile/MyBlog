@@ -62,7 +62,6 @@ async def execute(sql,args,autocommit=True):
                 async with conn.cursor(aiomysql.DictCursor) as cur:
                     await cur.execute(sql.replace('?','%s'),args)
                     affectedRow=cur.rowcount
-                    logging.debug('execute affectedRow'%affectedRow)
                 if not autocommit:
                     await conn.commit()
                     
@@ -186,7 +185,7 @@ class Model(dict,metaclass=ModelMetaclass):
         sql = [cls.__select__]
         if where:
             sql.append('where')
-            slq.append(where)
+            sql.append(where)
         if args is None:
             args = []
         orderBy = kw.get('orderBy',None)

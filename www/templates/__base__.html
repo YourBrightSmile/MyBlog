@@ -6,8 +6,12 @@
 	<title>{% block title %}?{% endblock %}</title>
 	<link rel="stylesheet" href="/static/css/uikit.min.css">
 	<link rel="stylesheet" href="/static/css/uikit.almost-flat.min">
+	<script src="/static/js/vue.min.js"></script>
 	<script src="/static/js/jquery.min.js"></script>
 	<script src="/static/uikit.min.js"></script>
+	<script src="/static/js/sha1.min.js"></script>
+	<script src="/static/js/awesome.js"></script>
+	
 	<style>
 		html,body,.main{ height: 100%; }
 		.main{ 
@@ -16,11 +20,18 @@
 		 	
 		 }
 		 .banner{
+		 	position:fixed;
+		 	top:0;
+		 	left:0;
 		 	padding-top: 12px;
     		padding-bottom: 12px;
     		color: rgba(255,255,255,0.75);
-    		height: 40px;
+    		height: 35px;
+    		width: 100%;
     		background-color: #24292e;
+		 }
+		 .body-middle{
+		 	margin-top: 80px;
 		 }
 		
 		.body-footer{
@@ -30,45 +41,76 @@
 			background-color: #252525;
 			color:#7d7d7d;
 		}
-
+		#a1,#a2,#a3,#lg,#re{
+			color: rgba(255,255,255,.7);
+		}
+		#a1:hover,#a2:hover,#a3:hover,#re:hover,#lg:hover{
+			color: black;
+		}
+		
+		#dropdown:focus{
+			outline:none;
+		}
 
 	</style>
 	{% block beforehead %}<!-- before head  -->{% endblock %}
 </head>
 <body >
-<div class="main">
 
-	<div  style="background: #24292E" class='banner body-nav uk-navbar uk-navbav-attached uk-contrast'>
+<div class="main" >
+	<div style="background: #24292E" class='banner body-nav uk-navbar uk-navbav-attached uk-contrast '>
 		<div  class="uk-container uk-width-3-4 uk-container-center">
-			<ul class='uk-navbar-nav'>
-			  	<a href="" class="uk-navbar-brand"><img src="https://www.baidu.com/favicon.ico"></a>
-			  	<li ><a>Aaaaa</a></li>
-			 	<li ><a>Bbbbb</a></li>
-			  	<li ><a>Ccccc</a></li> 
+			<ul  class='uk-navbar-nav '>
+			  	
+			  	<div class="uk-navbar-brand " >
+			  		<a href="#" ><img  style="width: 45px;height: 30px;"  class="uk-border-rounded"  src='http://i1.piimg.com/594980/9433c0e3843594e2.jpg'></a>
+			  	</div>
+			  	<li ><a href="/aa" class="uk-border-rounded" id="a1">AcA</a></li>
+			 	<li  ><a href="/blog" class="uk-border-rounded " id="a2">Blog</a></li>
+			  	<li ><a href="" class="uk-border-rounded" id="a3">Code</a></li> 
 			</ul>
 			<div class="uk-navbar-flip">
-				<ul class="uk-navbar-nav">
+				
                 {% if user %}
-                    <li class="uk-parent"  data-uk-dropdown>
-                        <a href="#0"><i class="uk-icon-user"></i> {{ user.name }}</a>
-                        <div class="uk-dropdown uk-dropdown-navbar">
-                            <ul class="uk-nav uk-nav-navbar">
-                                <li><a href="/signout"><i class="uk-icon-sign-out"></i> 登出</a></li>
-                            </ul>
-                        </div>
-                    </li>
+                <ul class="uk-navbar-nav">
+                	<li id="headPic" onmouseover="document.getElementById('headPic').setAttribute('class','uk-open'); $('#dropdown').focus();" data-uk-dropdown class="uk-parent" >
+                		<div  style="width: 45px;height: 45px;margin-top: -5px;">
+                			<a href="#" >
+                			<img  class=" uk-border-circle" src="https://avatars0.githubusercontent.com/u/19619286?v=3">
+                			</a>
+                		</div>
+
+                		<div onmouseleave="$('#headPic').removeClass('uk-open');" id='dropdown' tabindex="0"   class="uk-dropdown uk-border-rounded uk-dropdown-navbar uk-dropdown-top" style="top: 50px; left: -150px;background-color: white;box-shadow: 0 3px 12px rgba(27,31,35,0.15);border: 1px solid rgba(27,31,35,0.15);">
+                                            <ul class="uk-nav uk-nav-navbar"  >
+                                            	<li > <h5 style="color: gray;"><p>&nbsp;&nbsp;&nbsp;&nbsp;Sign as: {{ user.name }}</p></h5></li>
+                                            	<li class="uk-nav-divider"></li>
+                                                <li><a href="#" style="color: black;">New Blog</a></li>
+                                                <li><a href="#" style="color: black;">My Blogs</a></li>
+                                                <li><a href="#" style="color: black;">Settings</a></li>
+                                                <li class="uk-nav-divider"></li>
+                                                <li ><a href="/"  style="color: black;">SignOut</a></li>
+                                            </ul>
+                                        </div>
+                	</li>
+                </ul>
+                        
                 {% else %}
-                    <li><a href="/signin"><i class="uk-icon-sign-in"></i> login</a></li>
-                    <li><a href="/register"><i class="uk-icon-edit"></i> register</a></li>
+                <ul class="uk-navbar-nav">
+                    <li><a id="lg" class="uk-border-rounded" href="/signin"><i class="uk-icon-sign-in"></i> login</a></li>
+                    <li><a id="re" class="uk-border-rounded" href="/register"><i class="uk-icon-edit"></i> register</a></li>
+                </ul>
                 {% endif %}
+
 			</div>			
 		</div>		
 	</div>
+
 	<div class="body-middle" >
 		<div class="uk-container uk-container-center">
         	<div class="uk-grid">
 	            <!-- content -->
 	            {% block content %}
+
 	            {% endblock %}
 	            <!-- // content -->
        	 	</div>
@@ -88,11 +130,17 @@
 	        </div>
             <div class="uk-panel uk-contrast " >
                 <p>Made by YourBrightSmile ,Licensed under <a href="https://github.com/YourBrightSmile/MyBlog/blob/master/MIT LICENCE" >MIT license</a></p>
+                <p>感谢<a href="https://github.com/">Github</a>上的<a>开源项目</a></p>
                 <hr>
                 <a href="../index.html" style="color:#7d7d7d"><img src="" width="90" height="30" title="GG" alt="GG"></a>
             </div>
         </div>
     </div>
-    <script type="text/javascript" src="//cdn.bootcss.com/canvas-nest.js/1.0.1/canvas-nest.min.js"></script>
+
+<script type="text/javascript" src="//cdn.bootcss.com/canvas-nest.js/1.0.1/canvas-nest.min.js"></script>  
+<script type="text/javascript">
+	
+
+</script>
 </body>
 </html>
