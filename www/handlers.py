@@ -11,6 +11,11 @@ from aiohttp import web
 COOKIE_NAME='GBLOG'
 _COOKIE_KEY = configs.session.secret
 
+def check_admin(request):
+    logging.debug('xxxxxxxxxxxxxxxxxxxxxxxxxxxxx',request.__user__)
+    if request.__user__ is None or not request.__user__.admin:
+        raise APIPermissionError()
+
 def user2cookie(user, max_age):
     '''
     Generate cookie str by user.
@@ -50,6 +55,8 @@ async def cookie2user(cookie_str):
 
 
 
+
+
 @get('/')
 def index(request):
     
@@ -58,7 +65,7 @@ def index(request):
         'user':request.__user__,
     }  
 
-@get('/blog')
+@get('/article')
 async def blog(request):
     logging.info('handle index ...')
     summary = 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
@@ -71,10 +78,11 @@ async def blog(request):
 		Blog(id='2', name='Something New', summary=summary, created_at=time.time()-3600),
 		Blog(id='2', name='Something New', summary=summary, created_at=time.time()-3600),
     ]
-    user=await User.find("001494662207376e3fc945031af454e85a983371e51ab49000")
+    user=request.__user__
+    #user=await User.find("001494662207376e3fc945031af454e85a983371e51ab49000")
 
     return {
-        '__template__' :'blogs.html',
+        '__template__' :'article.html',
         'blogs':blogs,
         'user':user,
         }
@@ -179,14 +187,48 @@ def signin():
 
 @get('/signout')
 def signout(request):
+
     referer = request.headers.get('Referer')
-    r = web.HTTPFound(referer or '/')
+    r = web.HTTPFound(referer or '/article')
     r.set_cookie(COOKIE_NAME, '-deleted-', max_age=0, httponly=True)
     logging.info('user signed out.')
     return r
-    
-    
-    
+
+#博客管理页面
+@get('/manage/blogs')
+async def api_get_blogs(*, id):
+    blog = await Blog.find(id)
+    return blog
+
+#返回博客创建页面  
+@get('/manage/createBlog')  
+def create_blog(request):
+    return {
+        'user':request.__user__,
+        '__template__':'manage_blogs_create.html',
+        'action':'/api/blogs',
+        'id':'',
+    }
+
+@get('/api/blogs/{id}')
+async def api_get_blog(*, id):
+    blog = await Blog.find(id)
+    return blog
+
+
+#处理博客创建页面的POST请求
+@post('/api/blogs')
+async def api_blogs_create(request,*,name,summary,content):
+    check_admin(request)
+    if not name or not name.strip():
+        raise APIValueError('name', 'name cannot be empty.')
+    if not summary or not summary.strip():
+        raise APIValueError('summary', 'summary cannot be empty.')
+    if not content or not content.strip():
+        raise APIValueError('content', 'content cannot be empty.')
+    blog = Blog(user_id=request.__user__.id, user_name=request.__user__.name, user_image=request.__user__.image, name=name.strip(), summary=summary.strip(), content=content.strip())
+    await blog.save()
+    return blog
     
     
     

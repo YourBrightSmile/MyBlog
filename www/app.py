@@ -8,7 +8,8 @@ from jinja2 import Environment,FileSystemLoader
 import orm
 from coroweb import add_routes,add_static
 from handlers import cookie2user, COOKIE_NAME
-IP = '192.168.155.1'
+IP = '0.0.0.0'
+PORT = 8000
 #初始化jinja2
 def init_jinja2(app,**kw):
     logging.info('init jinja2 ........')
@@ -98,6 +99,7 @@ async def auth_factory(app, handler):
         logging.info('check user: %s %s' % (request.method, request.path))
         request.__user__ = None
         cookie_str = request.cookies.get(COOKIE_NAME)
+        
         if cookie_str:
             user = await cookie2user(cookie_str)
             if user:
@@ -126,16 +128,18 @@ def datetime_filter(t):
 
 #使用异步io的方式 初始化
 async def init(loop):
-    priGlasses()
+
     await orm.create_pool(loop=loop,host='127.0.0.1',port=3306,user='www-data',password='www-data',db='gblog')
     app=web.Application(loop=loop,middlewares=[logger_factory,response_factory,auth_factory])
     add_routes(app,'handlers')
     add_static(app)
     init_jinja2(app,filters=dict(datetime=datetime_filter))
     srv = await loop.create_server(app.make_handler(),IP,8000)
-    logging.info('Server started at http://%s:8000...'%IP)
+    logging.info('Server started at http://%s:%s...'%(IP,PORT))
+
     return srv
 
+priGlasses()
 loop = asyncio.get_event_loop()
 loop.run_until_complete(init(loop))
 loop.run_forever()

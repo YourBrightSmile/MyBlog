@@ -96,7 +96,7 @@ def has_request_arg(fn):
         if found and (param.kind!=inspect.Parameter.VAR_POSITIONAL and param.kind != inspect.Parameter.KEYWORD_ONLY and parm.kind!=inspect.Parameter.VAR_KEYWORD):
             raise ValueError('request parameter must be the last named parameter in function: %s%s' % (fn.__name__, str(sig)))
     return found
-#处理request请求
+#将app与handlers联系起来
 class RequestHandler(object):
     def __init__(self,app,fn):
         self._app=app
